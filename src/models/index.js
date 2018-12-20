@@ -1,23 +1,31 @@
 'use strict';
 
-const { readdirSync } = require('fs');
-const { join, basename } = require('path');
-const config = require('../config/db.js');
+const fs        = require('fs');
+const path      = require('path');
+const Sequelize = require('sequelize');
+const basename  = path.basename(__filename);
+const config    = require('../config/db.js');
+const db        = {};
 
-const db = (new require('sequelize'))(config.database, config.username, config.password, config.options);
-const models = {}
+var sequelize = new Sequelize(config.database, config.username, config.password, config.options);
 
-const files = readdirSync(__dirname)
-    .filter(file => (file.indexOf('.') !== 0) && (file !== basename(__filename)) && (file.slice(-3) === '.js'))
+fs
+  .readdirSync(__dirname)
+  .filter(file => {
+    return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
+  })
+  .forEach(file => {
+    var model = sequelize['import'](path.join(__dirname, file));
+    db[model.name] = model;
+  });
 
-for (const file of files) {
-    const model = db.import(join(__dirname, file))
-    models[model.name] = model
-}
+Object.keys(db).forEach(modelName => {
+  if (db[modelName].associate) {
+    db[modelName].associate(db);
+  }
+});
 
-for (const modelName of Object.keys(models)) {
-    const model = models[modelName]
-    if (model.associate) model.associate(models)
-}
+db.sequelize = sequelize;
+db.Sequelize = Sequelize;
 
-module.exports = models;
+module.exports = db;

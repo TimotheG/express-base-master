@@ -1,20 +1,14 @@
 extends layout.pug
-
-block header
-    a.btn.btn-primary(href='/monkeys')(style='margin-left:10px; margin-top:10px') < Back
-
 block content
     .row
       .offset-sm-2.col-sm-8
             h1.display-3  Monkey ID : #{id_singe}
-            table.table.table-dark
+            table.table.table-striped
                 thead
-                     tr
-                         th Paddock
+                    tr
+                        th.table-active Monkeys
                          th Capacity
                          th Link Paddock with Monkey
-                         th Update Paddock
-                         th Delete Paddock
 
                 tbody
                 each paddock in paddocks 
@@ -25,10 +19,4 @@ block content
                          td #{paddock.capacity}
                          td 
                             - var _url03 = '/addmonkeyinpaddock/' + id_singe + '/' + paddock.id
-                            a.btn.btn-primary(href=_url03, role='button') Link to this Paddock 
-                         td 
-                            - var _url05 = '/updatepaddock/' + paddock.id
-                            a.btn.btn-primary(href=_url05, role='button') Update 
-                         td
-                            - var _url06 = '/paddocks/delete/' + paddock.id
-                            a.btn.btn-danger(href=_url06, role='button') Delete 
+                            a.btn.btn-info(href=_url03, role='button') Link to this Paddock 

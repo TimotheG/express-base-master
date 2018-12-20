@@ -36,8 +36,8 @@ app.get('/createMonkey', async (req, res) => {
 app.post('/monkeys', async (req, res) => {
     await models.Monkeys.create({
         name: req.body.name,
-        num: req.body.num,
-        color: req.body.color
+        age: req.body.age,
+        breed: req.body.breed
     })
     res.render('MonkeyCreated')
 })

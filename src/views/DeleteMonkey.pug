@@ -1,9 +1,9 @@
-extends layout.pug	
-
-block header
-    a.btn.btn-primary(href='/monkeys')(style='margin-left:10px; margin-top:10px') < Back
-
+extends layout.pug
 block content
     .row
       .offset-sm-2.col-sm-8
-            h1.display-3  Monkey Deleted !
+            .alert.alert-success(role='alert')
+              h4.alert-heading Success !
+              p The monkey was deleted you are now referenced as an animal killer.
+              hr
+              p.mb-0 You have no heart trying to limit your killings...

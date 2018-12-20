@@ -1,8 +1,8 @@
 module.exports = (sequelize, DataTypes) => {
     var Monkeys = sequelize.define('Monkeys', {
         name: DataTypes.STRING,
-        num: DataTypes.INTEGER,
-        color: DataTypes.STRING
+        age: DataTypes.INTEGER,
+        breed: DataTypes.STRING
     });
 
     return Monkeys;

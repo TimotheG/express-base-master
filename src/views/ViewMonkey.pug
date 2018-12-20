@@ -1,19 +1,14 @@
 extends layout.pug
-
-block header
-    a.btn.btn-primary(href='/monkeys')(style='margin-left:10px; margin-top:10px') < Back
-    
-
 block content
    .row
-      .offset-sm-2.col-sm-8
-            h.display-3  #{monkey.name}
-            .card.bg-dark.text-white(style='width:400px; height:200px')
-                img.card-img-top(src='img_avatar1.png', alt='Card image')
-                .card-body(style='background-color:#222')
-                   h4.card-title  Informations :
-                   p.card-text Number : #{monkey.num}
-                   p.card-text Color : #{monkey.color}
+      .offset-sm-4.col-sm-8
+            h1.display-3  View Monkey
+            .card.border-info.mb-3(style='width:400px; height:270px')
+                .card-header.text-info(style='font-size:30px; text-align:center; text-transform:uppercase;') #{monkey.name}
+                .card-body.text-info
+                   h4.card-title(style='text-decoration:underline;')  Informations :
+                   p.card-text Age : #{monkey.age}
+                   p.card-text Breed : #{monkey.breed}
                    - var _url01 = '/updatemonkey/' + monkey.id
                    - var _url03 = '/monkeys/delete/' + monkey.id
                    a.btn.btn-primary(href='_url01') Update
