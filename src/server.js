@@ -61,7 +61,7 @@ app.get('/monkeys/delete/:id', async (req, res) => {
 
 //! Vue detaillée d'un singe.
 app.get('/monkeys/:id', async (req, res) => {
-    await models.Monkeys.findOne({ where: { id: req.params.id } })
+    const monkey = await models.Monkeys.findOne({ where: { id: req.params.id } })
     res.render('ViewMonkey', { monkey: monkey });
 })
 
@@ -111,7 +111,7 @@ app.get('/paddocks/delete/:id', async (req, res) => {
 app.get('/paddocks/:id', async (req, res) => {
     const paddock = await models.Paddocks.findOne({ where: { id: req.params.id } })
     const monkeys = await paddock.getMonkeys()
-    res.render('ViewPaddock', { paddock: _paddock, monkeys })
+    res.render('ViewPaddock', { paddock, monkeys })
 })
 
 function MiddleWareMAJ(req, res, next) {
