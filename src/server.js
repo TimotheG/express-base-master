@@ -19,147 +19,99 @@ app.set('views', path.join(__dirname, '/views'));
 app.use(morgan('short'))
 
 models.Monkeys.belongsTo(models.Paddocks);
-models.Paddocks.hasMany(models.Monkeys, { as: "Monkeys" });
+models.Paddocks.hasMany(models.Monkeys, { as: 'Monkeys' });
 
 //! Récupérer Singes et Enclos.
-app.get('/monkeys', function (req, res) {
-    var m_Monkeys = [];
-    var m_Paddocks = [];
-
-    models.Monkeys.findAll()
-        .then((monkeys) => {
-           
-            m_Monkeys = monkeys;
-        })
-    models.Paddocks.findAll()
-        .then((paddocks) => {
-            
-            m_Paddocks = paddocks;
-        })
-        .then(() => {
-            res.render('index', { monkeys: m_Monkeys, paddocks: m_Paddocks });
-        })
+app.get('/monkeys', async (req, res) => {
+    const monkeys = await models.Monkeys.findAll()
+    const paddocks = await models.Paddocks.findAll()
+    res.render('index', { monkeys, paddocks });
 })
 
 //! Création d'un singe.
-app.get('/createMonkey', function (req, res) {
+app.get('/createMonkey', async (req, res) => {
     res.render('CreateMonkey')
 })
 
-app.post('/monkeys', function (req, res) {
-    models.Monkeys.create({
+app.post('/monkeys', async (req, res) => {
+    await models.Monkeys.create({
         name: req.body.name,
         num: req.body.num,
         color: req.body.color
     })
-        .then(() => {
-            res.render('MonkeyCreated')
-        })
+    res.render('MonkeyCreated')
 })
 
 //! Modification d'un singe.
-app.get('/updatemonkey/:id', function (req, res) {
+app.get('/updatemonkey/:id', (req, res) => {
     res.render('UpdateMonkey', { id: req.params.id })
 })
 
-app.post('/monkeys/update/:id', [MiddleWareMAJ], function (req, res) {
+app.post('/monkeys/update/:id', [ MiddleWareMAJ ], async (req, res) => {
     console.log(req.body.name)
-    models.Monkeys.update({ id: req.body }, { where: { id: req.params.id } })
-        .then(() => {
-            res.render('MonkeyUpdated');
-        })
+    await models.Monkeys.update({ id: req.body }, { where: { id: req.params.id } })
+    res.render('MonkeyUpdated');
 })
 
 //! Suppression d'un singe.
-app.get('/monkeys/delete/:id', function (req, res) {
-    models.Monkeys.destroy({ where: { id: req.params.id } })
-        .then((monkey) => {
-            res.render("DeleteMonkey")
-        })
+app.get('/monkeys/delete/:id', async (req, res) => {
+    await models.Monkeys.destroy({ where: { id: req.params.id } })
+    res.render("DeleteMonkey")
 })
 
 //! Vue detaillée d'un singe.
-app.get('/monkeys/:id', function (req, res) {
-    models.Monkeys.findOne({ where: { id: req.params.id } })
-        .then((monkey) => {
-            res.render('ViewMonkey', { monkey: monkey });
-        })
+app.get('/monkeys/:id', async (req, res) => {
+    await models.Monkeys.findOne({ where: { id: req.params.id } })
+    res.render('ViewMonkey', { monkey: monkey });
 })
 
 
-app.get('/monkeyinpaddock/:id', function (req, res) {
-    var m_Paddocks = [];
-    models.Paddocks.findAll()
-        .then((paddocks) => {
-            m_Paddocks = paddocks;
-        })
-        .then(() => {
-            res.render('MonkeyInPaddock', { id_singe: req.params.id, paddocks: m_Paddocks });
-        })
-    
+app.get('/monkeyinpaddock/:id', async (req, res) => {
+    const paddocks = await models.Paddocks.findAll()
+    res.render('MonkeyInPaddock', { id_singe: req.params.id, paddocks });
 })
 
-app.get('/addmonkeyinpaddock/:id_singe/:id_enclos', function (req, res) {
-    var m_Paddock;
-    var m_Monkey;
-    models.Monkeys.findOne({ where: { id: req.params.id_singe } })
-        .then((monkey) => {
-             m_Monkey = monkey ;
-        })
-    models.Paddocks.findOne({ where: { id: req.params.id_enclos } })
-        .then((paddock) => {
-            m_Paddock = paddock;
-            paddock.addMonkeys(m_Monkey);
-            
-        })
-        .then(() => {
-            res.render('AddMonkeyInPaddock');
-        })
+app.get('/addmonkeyinpaddock/:id_singe/:id_enclos', async (req, res) => {
+    const monkey = await models.Monkeys.findOne({ where: { id: req.params.id_singe } })
+    const paddock = await models.Paddocks.findOne({ where: { id: req.params.id_enclos } })
+    paddock.addMonkeys(monkey);
+    res.render('AddMonkeyInPaddock');
 })
 
 //! Création d'un enclos.
-app.get('/createpaddock', function (req, res) {
+app.get('/createpaddock', async (req, res) => {
     res.render('CreatePaddock')
 })
 
-app.post('/paddocks', function (req, res) {
-    models.Paddocks.create({
-        nom: req.body.nom,
+app.post('/paddocks', async (req, res) => {
+    await models.Paddocks.create({
+        name: req.body.name,
         capacity: req.body.capacity
     })
-        .then(() => {
-            res.render('PaddockCreated')
-        })
+    res.render('PaddockCreated')
 })
 
 //! Modification d'un enclos.
-app.get('/updatepaddock/:id', function (req, res) {
+app.get('/updatepaddock/:id', async (req, res) => {
     res.render('UpdatePaddock', { id: req.params.id })
 })
 
-app.post('/paddocks/update/:id', [MiddleWareMAJ], function (req, res) {
-    models.Paddocks.update({ name: req.body.nom, capacity: req.body.capacity }, { where: { id: req.params.id } })
-        .then(() => {
-            res.render('PaddockUpdated');
-        })
+app.post('/paddocks/update/:id', [MiddleWareMAJ], async (req, res) => {
+    await models.Paddocks.update({ name: req.body.name, capacity: req.body.capacity }, { where: { id: req.params.id } })
+    res.render('PaddockUpdated');
 })
 
 //! Suppression d'un enclos.
-app.get('/paddocks/delete/:id', function (req, res) {
-    models.Paddocks.destroy({ where: { id: req.params.id } })
-        .then((enclos) => {
-            res.render("DeletePaddock")
-        })
+app.get('/paddocks/delete/:id', async (req, res) => {
+    await models.Paddocks.destroy({ where: { id: req.params.id } })
+    res.render("DeletePaddock")
 })
 
 //! Vue detaillée d'un enclos.
-app.get('/paddocks/:id', function (req, res) {
-    models.Paddocks.findOne({ where: { id: req.params.id } })
-        .then((_paddock) => {
-            _paddock.getMonkeys().then(associatedTasks => {
-                res.render('ViewPaddock', { paddock: _paddock, monkeys: associatedTasks })
-            })
-        })
+app.get('/paddocks/:id', async (req, res) => {
+    const paddock = await models.Paddocks.findOne({ where: { id: req.params.id } })
+    const monkeys = await paddock.getMonkeys()
+    res.render('ViewPaddock', { paddock: _paddock, monkeys })
 })
 
 function MiddleWareMAJ(req, res, next) {

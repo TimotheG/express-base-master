@@ -1,4 +1,5 @@
 extends layout.pug	
+
 block content
    .row
       .offset-sm-2.col-sm-8
@@ -6,17 +7,18 @@ block content
         
             -var sizePaddocks = paddocks.length
             -var sizeMonkeys = monkeys.length
+            p
             p.lead There is #{sizeMonkeys} Monkey(s) and #{sizePaddocks} Paddock(s) !
             
-            table.table.table-dark
+            table.table.table-striped
                 thead
                     tr
-                        th Monkeys
+                        th.table-active Monkeys
                         th Numbers
                         th Colors
                         th Update Monkey
                         th Link Monkey with Paddock
-                        th Delete Monkey
+                        th.table-default Delete Monkey
                 tbody
                 each _monkey in monkeys 
                     tr
@@ -36,10 +38,10 @@ block content
                            a.btn.btn-danger(href=_url03, role='button') Delete 
             a.btn.btn-success(href='/createMonkey/', role='button') Create Monkey
 
-            table.table.table-dark
+            table.table.table-striped
                thead
                     tr
-                        th Paddocks
+                        th.table-active Paddocks
                         th Capacity
                         th Update Paddock 
                         th Delete Paddock
@@ -49,7 +51,7 @@ block content
                    tr
                         td 
                            - var _url04 = '/paddocks/' + _paddock.id
-                           a(href=_url04) #{_paddock.nom}
+                           a(href=_url04) #{_paddock.name}
                         td #{_paddock.capacity}
                         td 
                            - var _url05 = '/updatepaddock/' + _paddock.id

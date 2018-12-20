@@ -1,7 +1,7 @@
 module.exports = (sequelize, DataTypes) => {
     var Paddocks = sequelize.define('Paddocks', {
         
-        nom: DataTypes.STRING,
+        name: DataTypes.STRING,
         capacity: DataTypes.INTEGER
     });
 
