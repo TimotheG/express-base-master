@@ -1,0 +1,21 @@
+extends layout.pug
+
+block header
+    a.btn.btn-primary(href='/monkeys')(style='margin-left:10px; margin-top:10px') < Back
+
+block content
+    .row
+      .offset-sm-2.col-sm-8
+            h1.display-3  Create Monkey !
+            - var _url = '/monkeys' 
+            form(method='POST' action=_url)
+                div.form-group
+                    label(for='name') Name :
+                    input#name.form-control(type='text', placeholder='Name of Monkey' name='name')
+                div.form-group
+                    label(for='num') Number :
+                    input#num.form-control(type="number", placeholder='Number of Monkey' name='num')
+                div.form-group
+                    label(for='color') Color :
+                    input#color.form-control(type='text', placeholder='Color of Monkey' name='color')
+                button.btn.btn-success(type='submit') Submit

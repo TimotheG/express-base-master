@@ -1,0 +1,51 @@
+extends layout.pug
+block header
+    a.btn.btn-primary(href='/monkeys')(style='margin-left:10px; margin-top:10px') < Back
+
+block content
+    .row
+      .offset-sm-2.col-sm-8
+            h1.display-3  View Paddock !
+            .card.bg-dark.text-white
+                
+                .card-body(style='background-color:#222')
+                   h4.card-title  #{paddock.nom}
+                   p.card-text Capacity : #{paddock.capacity}
+                   
+                   - var _url01 = '/updatepaddock/' + paddock.id
+                   - var _url03 = '/paddocks/delete/' + paddock.id
+                   - var _url07 = '/createMonkey/'
+                   a.btn.btn-primary(href='_url01') Update
+                   //! ETTRANGE
+                   a.btn.btn-success(href='_url07')(style='margin-left:10px') Add Monkey
+                   a.btn.btn-danger(href='_url03')(style='margin-left:10px') Delete
+
+            table.table.table-dark
+                thead
+                    tr
+                        th Monkeys
+                        th Number
+                        th Colors
+                        th Update Monkey
+                        th Link Monkey with Paddock
+                        th Delete Monkey
+                tbody
+                each monkey in monkeys 
+                    tr
+                        td 
+                           - var _url00 = '/monkeys/' + monkey.id
+                           a(href=_url00) #{monkey.name}
+                        td #{monkey.num}
+                        td #{monkey.color}
+                        td 
+                           - var _url01 = '/updatemonkey/' + monkey.id
+                           a.btn.btn-primary(href=_url01, role='button') Update 
+                        td 
+                           - var _url02 = '/monkeyinpaddock/' + monkey.id
+                           a.btn.btn-primary(href=_url02, role='button') Link this Monkey
+                        td
+                           - var _url03 = '/monkeys/delete/' + monkey.id
+                           a.btn.btn-danger(href=_url03, role='button') Delete
+            a.btn.btn-success(href='/createMonkey/', role='button') Create Monkey
+           
+

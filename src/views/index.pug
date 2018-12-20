@@ -1,0 +1,61 @@
+extends layout.pug	
+block content
+   .row
+      .offset-sm-2.col-sm-8
+         h1.display-1  Monkey 3000
+        
+            -var sizePaddocks = paddocks.length
+            -var sizeMonkeys = monkeys.length
+            p.lead There is #{sizeMonkeys} Monkey(s) and #{sizePaddocks} Paddock(s) !
+            
+            table.table.table-dark
+                thead
+                    tr
+                        th Monkeys
+                        th Numbers
+                        th Colors
+                        th Update Monkey
+                        th Link Monkey with Paddock
+                        th Delete Monkey
+                tbody
+                each _monkey in monkeys 
+                    tr
+                        td 
+                           - var _url00 = '/monkeys/' + _monkey.id
+                           a(href=_url00) #{_monkey.name}
+                        td #{_monkey.num}
+                        td #{_monkey.color}
+                        td 
+                           - var _url01 = '/updatemonkey/' + _monkey.id
+                           a.btn.btn-primary(href=_url01, role='button') Update 
+                        td 
+                           - var _url02 = '/monkeyinpaddock/' + _monkey.id
+                           a.btn.btn-primary(href=_url02, role='button') Link this Monkey
+                        td
+                           - var _url03 = '/monkeys/delete/' + _monkey.id
+                           a.btn.btn-danger(href=_url03, role='button') Delete 
+            a.btn.btn-success(href='/createMonkey/', role='button') Create Monkey
+
+            table.table.table-dark
+               thead
+                    tr
+                        th Paddocks
+                        th Capacity
+                        th Update Paddock 
+                        th Delete Paddock
+      
+               tbody
+               each _paddock in paddocks 
+                   tr
+                        td 
+                           - var _url04 = '/paddocks/' + _paddock.id
+                           a(href=_url04) #{_paddock.nom}
+                        td #{_paddock.capacity}
+                        td 
+                           - var _url05 = '/updatepaddock/' + _paddock.id
+                           a.btn.btn-primary(href=_url05, role='button') Update 
+                        td
+                           - var _url06 = '/paddocks/delete/' + _paddock.id
+                           a.btn.btn-danger(href=_url06, role='button') Delete
+            a.btn.btn-success(href='/createpaddock/', role='button') Create Paddock
+      

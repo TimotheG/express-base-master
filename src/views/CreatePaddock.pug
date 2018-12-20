@@ -1,0 +1,18 @@
+extends layout.pug
+
+block header
+    a.btn.btn-primary(href='/monkeys')(style='margin-left:10px; margin-top:10px') < Back
+
+block content
+    .row
+      .offset-sm-2.col-sm-8
+            h1.display-3  Create Paddock !
+            - var _url = '/paddocks' 
+            form(method='POST' action=_url)
+                div.form-group
+                    label(for='nom') Name :
+                    input#nom.form-control(type="text", placeholder="Name of Paddock" name='nom')
+                div.form-group
+                    label(for='capacity') Capacity :
+                    input#capacity.form-control(type="number", placeholder="Capacity of Paddock" name='capacity')
+                button.btn.btn-success(type='submit') Submit
