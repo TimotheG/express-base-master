@@ -1,20 +1,23 @@
-const Sequelize = require('sequelize')
-const config = require('../config/db.js')
+'use strict';
 
-class Storage {
-    constructor() {
-        this.db = new Sequelize(
-            config.database,
-            config.username,
-            config.password,
-            config.options
-        )
+const { readdirSync } = require('fs');
+const { join, basename } = require('path');
+const config = require('../config/db.js');
 
-        this.monkey = require('./monkey')(this.db, Sequelize)
-        this.paddock = require('./paddocks')(this.db, Sequelize)
+const db = (new require('sequelize'))(config.database, config.username, config.password, config.options);
+const models = {}
 
-        this.monkey.belongsTo(this.paddock)
-    }
+const files = readdirSync(__dirname)
+    .filter(file => (file.indexOf('.') !== 0) && (file !== basename(__filename)) && (file.slice(-3) === '.js'))
+
+for (const file of files) {
+    const model = db.import(join(__dirname, file))
+    models[model.name] = model
 }
 
-module.exports = new Storage()
+for (const modelName of Object.keys(models)) {
+    const model = models[modelName]
+    if (model.associate) model.associate(models)
+}
+
+module.exports = models;
