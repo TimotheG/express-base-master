@@ -47,9 +47,9 @@ app.get('/updatemonkey/:id', (req, res) => {
     res.render('UpdateMonkey', { id: req.params.id })
 })
 
-app.post('/monkeys/update/:id', [ MiddleWareMAJ ], async (req, res) => {
+app.post('/monkeys/update/:id', [ MiddleWare ], async (req, res) => {
     console.log(req.body.name)
-    await models.Monkeys.update({ id: req.body }, { where: { id: req.params.id } })
+    await models.Monkeys.update({ name: req.body.name, age: req.body.age, breed: req.body.breed }, { where: { id: req.params.id } })
     res.render('MonkeyUpdated');
 })
 
@@ -64,7 +64,6 @@ app.get('/monkeys/:id', async (req, res) => {
     const monkey = await models.Monkeys.findOne({ where: { id: req.params.id } })
     res.render('ViewMonkey', { monkey: monkey });
 })
-
 
 app.get('/monkeyinpaddock/:id', async (req, res) => {
     const paddocks = await models.Paddocks.findAll()
@@ -96,7 +95,7 @@ app.get('/updatepaddock/:id', async (req, res) => {
     res.render('UpdatePaddock', { id: req.params.id })
 })
 
-app.post('/paddocks/update/:id', [MiddleWareMAJ], async (req, res) => {
+app.post('/paddocks/update/:id', [MiddleWare], async (req, res) => {
     await models.Paddocks.update({ name: req.body.name, capacity: req.body.capacity }, { where: { id: req.params.id } })
     res.render('PaddockUpdated');
 })
@@ -114,7 +113,7 @@ app.get('/paddocks/:id', async (req, res) => {
     res.render('ViewPaddock', { paddock, monkeys })
 })
 
-function MiddleWareMAJ(req, res, next) {
+function MiddleWare(req, res, next) {
     console.log(req.body);
     const objRet = req.body;
     for (let property in req.body) {
