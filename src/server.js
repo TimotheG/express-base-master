@@ -54,7 +54,7 @@ app.post('/monkeys/update/:id', [ MiddleWare ], async (req, res) => {
 })
 
 //! Suppression d'un singe.
-app.get('/monkeys/delete/:id', async (req, res) => {
+app.delete('/monkeys/delete/:id', async (req, res) => {
     await models.Monkeys.destroy({ where: { id: req.params.id } })
     res.render("DeleteMonkey")
 })
@@ -114,16 +114,10 @@ app.get('/paddocks/:id', async (req, res) => {
 })
 
 function MiddleWare(req, res, next) {
-    console.log(req.body);
-    const objRet = req.body;
-    for (let property in req.body) {
-        if (req.body[property] == '') {
-            delete objRet[property];
-        }
-    }
-    console.log(objRet);
-    req.body = objRet;
-    next();
+    for (const key in req.body)
+        if (req.body[key] === '')
+            delete req.body[key]
+    next()
 }
 
 // Synchronize models
