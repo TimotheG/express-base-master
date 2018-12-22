@@ -54,7 +54,7 @@ app.post('/monkeys/update/:id', [ MiddleWare ], async (req, res) => {
 })
 
 //! Suppression d'un singe.
-app.delete('/monkeys/delete/:id', async (req, res) => {
+app.get('/monkeys/delete/:id', async (req, res) => {
     await models.Monkeys.destroy({ where: { id: req.params.id } })
     res.render("DeleteMonkey")
 })
